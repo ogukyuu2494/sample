@@ -1,0 +1,145 @@
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const slides = [
+  {
+    title: "AIアート書籍出版戦略",
+    content: "人気タイトルの縦展開から有料本販売までの戦略的アプローチ",
+    type: "title"
+  },
+  {
+    title: "1. 人気タイトルの縦展開",
+    content: "既存の人気タイトルを基に、関連テーマで書籍シリーズを展開します。",
+    image: (
+      <svg viewBox="0 0 300 200">
+        <rect x="10" y="10" width="80" height="100" fill="#4CAF50" />
+        <text x="50" y="60" textAnchor="middle" fill="white">人気本</text>
+        <line x1="90" y1="60" x2="130" y2="40" stroke="black" />
+        <line x1="90" y1="60" x2="130" y2="60" stroke="black" />
+        <line x1="90" y1="60" x2="130" y2="80" stroke="black" />
+        <rect x="130" y="20" width="60" height="40" fill="#2196F3" />
+        <rect x="130" y="70" width="60" height="40" fill="#2196F3" />
+        <rect x="130" y="120" width="60" height="40" fill="#2196F3" />
+        <text x="160" y="40" textAnchor="middle" fill="white" fontSize="10">関連本1</text>
+        <text x="160" y="90" textAnchor="middle" fill="white" fontSize="10">関連本2</text>
+        <text x="160" y="140" textAnchor="middle" fill="white" fontSize="10">関連本3</text>
+      </svg>
+    )
+  },
+  {
+    title: "2. 市場調査の実施",
+    content: "Amazon、SNS、アートコミュニティでの需要と傾向を分析します。",
+    chart: (
+      <ResponsiveContainer width="100%" height={200}>
+        <BarChart data={[
+          { name: 'Amazon', value: 4000 },
+          { name: 'SNS', value: 3000 },
+          { name: 'アートコミュニティ', value: 2000 },
+        ]}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="value" fill="#8884d8" />
+        </BarChart>
+      </ResponsiveContainer>
+    )
+  },
+  {
+    title: "3. 関連商品の開発",
+    content: "書籍を中心に、デジタルコンテンツやグッズなどの関連商品を展開します。",
+    image: (
+      <svg viewBox="0 0 300 200">
+        <circle cx="150" cy="100" r="60" fill="#FFC107" />
+        <text x="150" y="105" textAnchor="middle" fill="white">書籍</text>
+        <circle cx="70" cy="70" r="30" fill="#4CAF50" />
+        <text x="70" y="75" textAnchor="middle" fill="white" fontSize="10">電子書籍</text>
+        <circle cx="70" cy="130" r="30" fill="#2196F3" />
+        <text x="70" y="135" textAnchor="middle" fill="white" fontSize="10">オーディオ</text>
+        <circle cx="230" cy="70" r="30" fill="#9C27B0" />
+        <text x="230" y="75" textAnchor="middle" fill="white" fontSize="10">ポスター</text>
+        <circle cx="230" cy="130" r="30" fill="#FF5722" />
+        <text x="230" y="135" textAnchor="middle" fill="white" fontSize="10">グッズ</text>
+      </svg>
+    )
+  },
+  {
+    title: "4. 無料本から有料本への誘導",
+    content: "無料サンプルや限定章を提供し、有料本への興味を喚起します。",
+    image: (
+      <svg viewBox="0 0 300 200">
+        <rect x="10" y="50" width="80" height="100" fill="#4CAF50" />
+        <text x="50" y="100" textAnchor="middle" fill="white">無料本</text>
+        <path d="M90 100 L150 100 Q200 100 200 150" stroke="black" fill="none" strokeWidth="2" />
+        <polygon points="200,150 195,140 205,140" fill="black" />
+        <rect x="160" y="150" width="80" height="100" fill="#FFC107" />
+        <text x="200" y="200" textAnchor="middle" fill="white">有料本</text>
+      </svg>
+    )
+  },
+  {
+    title: "5. 販売戦略の実行",
+    content: "SEO対策、SNSマーケティング、レビュー促進などの総合的な戦略を実行します。",
+    chart: (
+      <ResponsiveContainer width="100%" height={200}>
+        <BarChart data={[
+          { name: 'SEO対策', value: 4000 },
+          { name: 'SNSマーケティング', value: 3000 },
+          { name: 'レビュー促進', value: 2000 },
+          { name: 'メール配信', value: 2780 },
+          { name: '広告出稿', value: 1890 },
+        ]}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="value" fill="#82ca9d" />
+        </BarChart>
+      </ResponsiveContainer>
+    )
+  }
+];
+
+const Slideshow = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  return (
+    <div className="bg-gray-100 p-4 rounded-lg shadow-lg">
+      <div className="bg-white p-6 rounded-lg shadow mb-4">
+        <h2 className="text-2xl font-bold mb-4">{slides[currentSlide].title}</h2>
+        <p className="mb-4">{slides[currentSlide].content}</p>
+        {slides[currentSlide].image && (
+          <div className="w-full h-64">
+            {slides[currentSlide].image}
+          </div>
+        )}
+        {slides[currentSlide].chart && (
+          <div className="w-full h-64">
+            {slides[currentSlide].chart}
+          </div>
+        )}
+      </div>
+      <div className="flex justify-between">
+        <button onClick={prevSlide} className="bg-blue-500 text-white px-4 py-2 rounded">
+          <ChevronLeft />
+        </button>
+        <button onClick={nextSlide} className="bg-blue-500 text-white px-4 py-2 rounded">
+          <ChevronRight />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Slideshow;
